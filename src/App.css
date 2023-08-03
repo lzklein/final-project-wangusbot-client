@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: lightslategray;
 }
 
 .App-logo {
@@ -36,3 +37,69 @@
     transform: rotate(360deg);
   }
 }
+
+.grid { 
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 20px;
+  align-items: center;
+  }
+.grid > article {
+  border: 1px solid #ccc;
+  box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+}
+.grid > article img {
+  max-width: 100%;
+}
+.text {
+  padding: 0 20px 20px;
+}
+.text > button {
+  background: gray;
+  border: 0;
+  color: white;
+  padding: 10px;
+  width: 100%;
+  }
+.card {
+  background-color: rgb(169, 187, 206);
+  padding-bottom: 10px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+  border-radius: 1px;
+  user-select: none;
+  
+}
+.card:hover {
+  background-color: rgb(208, 219, 232);
+  box-shadow: rgba(255, 255, 255, 0.324) 0px 50px 100px -20px, rgba(255, 255, 255, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;  margin-left: 20px;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: right;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: #111;
+}
+
+/* .profile {
+  float: right;
+} */

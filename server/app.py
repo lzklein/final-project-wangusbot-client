@@ -30,8 +30,7 @@ class DiscordCallback(Resource):
         response = requests.post(discord_token_endpoint, data=params, headers=headers)
 
         if response.status_code == 200:
-            access_token = response.json().get('access_token')
-            # return access_token.json()
+            # access_token = response.json().get('access_token')
             return response.json() 
         else:
             return jsonify({'message': 'Authentication failed'}), response.status_code

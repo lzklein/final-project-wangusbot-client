@@ -1,9 +1,26 @@
-import React from 'react'
+import React, { useContext } from 'react';
+import { AuthContext } from './App';
+import ServerCard from "./ServerCard";
 
 const Dashboard = () => {
-  return (
-    <div>Dashboard</div>
-  )
-}
+  const { guilds } = useContext(AuthContext);
 
-export default Dashboard
+  if (guilds && Array.isArray(guilds)) {
+    const renderGuilds = () => {
+      return guilds.map((guild) => {
+        return <ServerCard guild={guild} key={guild.id} />;
+      });
+    };
+
+    return (
+      <div>
+        <h2 style={{'marginBottom':'40px'}}>== Your Servers ==</h2>
+        <div className="grid">{renderGuilds()}</div>
+      </div>
+    );
+  } else {
+    return null;
+  }
+};
+
+export default Dashboard;
