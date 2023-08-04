@@ -11,10 +11,11 @@ const Dashboard = () => {
         return <ServerCard guild={guild} key={guild.id} />;
       });
     };
-
+  
     return (
       <div>
         <h2 style={{'marginBottom':'40px'}}>== Your Servers ==</h2>
+        {/* <button onClick={handleInvite}>Invite the bot</button> */}
         <div className="grid">{renderGuilds()}</div>
       </div>
     );

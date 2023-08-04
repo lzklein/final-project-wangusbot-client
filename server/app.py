@@ -12,6 +12,7 @@ load_dotenv(dotenv_path)
 DISCORD_CLIENT_ID = os.environ.get("CLIENT_ID")
 DISCORD_CLIENT_SECRET = os.environ.get("SECRET")
 DISCORD_REDIRECT_URI = os.environ.get("REDIRECT_URI")
+DISCORD_BOT_TOKEN = os.environ.get("BOT_TOKEN")
 
 class DiscordCallback(Resource):
     def post(self):
@@ -57,6 +58,28 @@ class DiscordUser(Resource):
         else:
             return {"error": "Failed to fetch user data from Discord"}, response.status_code
 api.add_resource(DiscordUser, '/userauth')
+
+# class BotCheck(Resource):
+#     def post(self):
+#         data = request.get_json()
+#         guild_id = data.get('guild_id')
+#         bot_token = DISCORD_BOT_TOKEN
+#         user_id = data.get('user_id')
+#         user_token = data.get('user_token')
+#         try:
+#             response = self.fetch_discord_membership(guild_id, bot_token, user_id)
+#             return response.json(), response.status_code
+#         except Exception as error:
+#             return {'error': 'Error fetching bot membership', 'details': str(error)}, 500
+
+#     def fetch_discord_membership(self, guild_id, bot_token, user_id):
+#         headers = {
+#             'Authorization': f'Bot {bot_token}'
+#         }
+#         url = f'https://discord.com/api/v10/guilds/{guild_id}/members/{user_id}'
+#         response = requests.get(url, headers=headers)
+#         return response
+# api.add_resource(BotCheck, '/fetch-bot')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
