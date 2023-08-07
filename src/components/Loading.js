@@ -68,7 +68,7 @@ const Loading = () => {
     }, []);
 
     const fetchAuthData = async (code) => {
-        const response = await fetch(`http://127.0.0.1:5555/auth/callback?code=${code}`, {
+        const response = await fetch(`/auth/callback?code=${code}`, {
             method: 'POST',
         });
         return response.json();
@@ -104,7 +104,7 @@ const Loading = () => {
             user_avatar: userData.avatar,
             authorization_token: authData.access_token,
             refresh_token: authData.refresh_token})
-        const response = await fetch('http://127.0.0.1:5555/registeruser', {
+        const response = await fetch('/registeruser', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -134,7 +134,7 @@ const Loading = () => {
         const serverRegistrationPromises = guildData.map((guild) => {
             
             console.log('checkpoint 10+!')
-            return fetch('http://127.0.0.1:5555/registerserver', {
+            return fetch('/registerserver', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -156,7 +156,6 @@ const Loading = () => {
 
     return (
         <div>
-            Loading
             <img src={loader} style={{ width: '50%' }} alt="loading..." />
         </div>
     );

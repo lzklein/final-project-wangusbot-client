@@ -38,6 +38,10 @@
   }
 }
 
+html {
+  background-color: lightslategrey;
+}
+
 .grid { 
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -75,16 +79,61 @@
   background-color: rgb(208, 219, 232);
   box-shadow: rgba(255, 255, 255, 0.324) 0px 50px 100px -20px, rgba(255, 255, 255, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;  margin-left: 20px;
 }
-ul {
+
+.nav-list {
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
   background-color: #333;
+  display: flex; /* Use flex display for vertical centering */
+  align-items: center; /* Vertically center the content */
+  height: 60px; /* Adjust this value to match the desired height */
 }
 
-li {
+.navitem {
   float: right;
+  flex: 1;
+  text-align: center;
+  min-height: 41px;
+  /* flex-shrink: 0; */
+  position: relative; /* Add this for positioning the pseudo-element */
+}
+
+.navitem::before {
+  content: "";
+  position: absolute;
+  top: -10px; /* Adjusted to cover the top margin */
+  left: 0;
+  width: 100%;
+  height: calc(100% + 20px); /* Adjusted to cover the top and bottom margins */
+  background-color: #111;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.navitem:hover::before {
+  opacity: 1; /* Increase opacity on hover */
+}
+:root {
+  --sitelogo-margin-right: 30%; /* Default margin-right value */
+}
+
+.sitelogo {
+  float: left;
+  display: block;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: yellow;
+  font-size: 45px;
+  margin-right: var(--sitelogo-margin-right);
+  flex-shrink: 0;
+  /* margin-top: -7px; */
+
+}
+
+.siteImg {
+  flex-shrink: 0;
 }
 
 li a {
@@ -98,8 +147,46 @@ li a {
 /* Change the link color to #111 (black) on hover */
 li a:hover {
   background-color: #111;
+  /* height: 41px; */
 }
 
-/* .profile {
-  float: right;
-} */
+.commands{
+  columns: 6rem auto;
+  columns: 2;
+  display: flex;
+}
+
+.column-short{
+  flex: 1;
+  background-color: rgb(169, 187, 206);
+  /* width: calc(50% - 10px); */
+  margin-left: 5px;
+  margin-right: 5px;
+  outline-style: outset;
+  break-inside: avoid-column;  
+}
+
+.column-long{
+  flex: 2;
+  background-color: rgb(169, 187, 206);
+  margin-left: 5px;
+  margin-right: 5px;
+  outline-style: outset;
+  /* width: calc(100% - 50% - 10px); */
+}
+
+.column-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  margin: 5px;
+  text-align: center; 
+}
+
+.column-heading {
+  margin: 10px 0; /* Add top and bottom margin to headings */
+  font-weight: bold;
+  list-style: none;
+}

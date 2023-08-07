@@ -49,7 +49,7 @@ const Header = () => {
 
   return (
     <div>
-      <Navbar user={userData} login={handleLogin}/>
+      <Navbar user={userData} login={handleLogin} logout={logout}/>
       {userData ? (
         <div>
           <p>welcome, {userData.username}</p>
