@@ -309,6 +309,7 @@ dist
 ### Python ###
 # Byte-compiled / optimized / DLL files
 
+./server/flask_session
 # C extensions
 
 # Distribution / packaging
