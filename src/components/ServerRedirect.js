@@ -6,8 +6,21 @@ const ServerRedirect = () => {
     useEffect(()=>{
         const redirect = localStorage.getItem('redirect');
         console.log(redirect)
-        // TODO if redirect in backend server list, go here, else go back to dashboard or something
-        navigate(`/server/${redirect}`)
+        fetch('/botcheck', {
+          method: 'POST',
+          body: JSON.stringify({
+              server_name: redirect
+          })
+        })
+        .then(r=> r.json())
+        .then(redirectData=>{
+          if(redirectData.message){
+            navigate(`/dashboard`)
+          }
+          else{
+            navigate(`/server/${redirect}`)
+          }
+        })
     },[])
   return (
     <div>Loading . . .</div>

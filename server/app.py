@@ -1,18 +1,23 @@
 import os
 from ipdb import set_trace
 from config import app, db, migrate, api
-# from models import User
-from flask import request, make_response, session, jsonify, redirect, url_for
-from flask_restful import Resource, reqparse
+from models import SessionUser, SessionServer, BotServer, BotCommand, ServerCommand
+from flask import request, make_response, session, sessions, jsonify, redirect, url_for
+from flask_restful import Resource
 from dotenv import load_dotenv
 import requests
 
-dotenv_path = "../.env" 
+#env
+dotenv_path = "../.env"
 load_dotenv(dotenv_path)
 DISCORD_CLIENT_ID = os.environ.get("CLIENT_ID")
-DISCORD_CLIENT_SECRET = os.environ.get("SECRET")
+DISCORD_CLIENT_SECRET = os.environ.get("DISCORD_SECRET")
 DISCORD_REDIRECT_URI = os.environ.get("REDIRECT_URI")
 DISCORD_BOT_TOKEN = os.environ.get("BOT_TOKEN")
+
+#session secret key
+SECRET_KEY = os.environ.get("SECRET")
+app.secret_key = SECRET_KEY
 
 class DiscordCallback(Resource):
     def post(self):
@@ -59,7 +64,150 @@ class DiscordUser(Resource):
             return {"error": "Failed to fetch user data from Discord"}, response.status_code
 api.add_resource(DiscordUser, '/userauth')
 
+class RegisterUser(Resource):
+    def post(self):
+        print('inside RegisterUser')
+        user_name = request.json.get('user_name')
+        user_global_name = request.json.get('user_global_name')
+        user_id = request.json.get('user_id')
+        user_avatar = request.json.get('user_avatar')
+        authorization_token = request.json.get('authorization_token')
+        refresh_token = request.json.get('refresh_token')
+        
+        if not user_name:
+            return {'message': 'Authentication failed'}, 400
+
+        # Check if session exists
+        existing_session = SessionUser.query.filter(SessionUser.user_id == user_id).first()
+        if existing_session:
+            return {'message': 'Session already exists. This is a bug'}, 200
+
+        try:
+            new_session = SessionUser(user_name=user_name, user_global_name=user_global_name, user_id=user_id, user_avatar=user_avatar, authorization_token=authorization_token, refresh_token=refresh_token)
+            db.session.add(new_session)
+            db.session.commit()
+            session['id'] = new_session.id
+            print('inside set session id')
+            print(session)
+            print(session.sid)
+            # set_trace()
+            response = make_response(new_session.to_dict(), 201)
+            return response  
+        except Exception as e:
+            db.session.rollback()
+            return {'message': str(e)}, 422
+api.add_resource(RegisterUser, '/registeruser')
+
+@app.route('/getsession')
+def get():
+    print(session)
+    print(session.sid)
+    return ''
+
+class RegisterServer(Resource):
+    def post(self):
+        print('inside set RegisterServer')
+        print(session.sid)
+        # ! each discord server has to be separately added 
+        discord_id = request.json.get('discord_id')
+        discord_name = request.json.get('discord_name')
+        discord_icon = request.json.get('discord_icon')
+        session_id = request.json.get('session_id')
+        session_user_id = request.json.get('session_user_id')
+        session_username = request.json.get('session_username')
+
+        if not discord_name:
+            return {'message': 'Authentication failed'}, 400
+
+        # Check if session exists
+        existing_server = SessionServer.query.filter(SessionServer.discord_id == discord_id).first()
+        if existing_server:
+            return {'message': 'Server is already exists.'}, 409  # 409 Conflict status code for duplicate resource
+        try:
+            # Assuming the registration is successful, create a new user record in the database
+            new_server = SessionServer(discord_id=discord_id, discord_name=discord_name, discord_icon=discord_icon, session_id=session_id, session_user_id=session_user_id, session_username=session_username)
+            # new_server = SessionServer
+            db.session.add(new_server)
+            db.session.commit()
+            response = make_response(new_server.to_dict(), 201)
+        except Exception as e:
+            # Handle any database-related errors here
+            db.session.rollback()
+            return {'message': str(e)}, 422
+
+        # Return a success response indicating the registration was successful
+        return response  # 201 Created status code for successful resource creation
+api.add_resource(RegisterServer, '/registerserver')
+
+
+class CheckSession(Resource):
+    def get(self):
+        print('inside set CheckSession')
+        print(session)
+        try:
+            # set_trace()
+            user = SessionUser.query.filter_by(id = session['id']).first()
+            if user:
+                return user.to_dict()
+            # else:
+            #     return {'message': '401: Not Authorized'}, 401
+        except:
+            return {'message': '401: Not Authorized'}, 401
+api.add_resource(CheckSession, '/checksession')
+
+
+class Logout(Resource):
+    def delete(self):
+        print('inside logout')
+        print(session)
+        try:
+            session_id = session['id']
+            session_user = SessionUser.query.filter(SessionUser.id == session_id).first()
+            session_servers = SessionServer.query.filter(SessionServer.session_user_id == session_user.user_id).all()
+            db.session.delete(session_user)
+            db.session.delete(session_servers)
+            db.session.commit()
+            session.clear()
+            return {}, 204
+        except Exception as e:
+            db.session.rollback()
+            return {'message': 'Logout failed', 'error': str(e)}, 500       
+api.add_resource(Logout, '/logout')
+
+class AllCommands(Resource):
+    def get(self):
+        try:
+            commands = BotCommand.query.all()
+            commands_list = [command.to_dict() for command in commands]
+            return jsonify(commands_list)
+        except Exception as e:
+            return {'error': str(e)}, 500
+api.add_resource(AllCommands, '/allcommands')
+
+class BotCheck(Resource):
+    def post(self):
+        server_name = request.json.get('server_name')
+        # check if selected server in bot_servers
+        server_found = BotServer.query.filter(BotServer.discord_name == server_name).first()
+        # if server already in bot_servers, just say it's in there
+        if server_found:
+            return {'message': 'server exists'}, 200
+        # if not add server to bot_servers
+        else:
+            try:
+                server = SessionServer.query.filter(SessionServer.discord_name == server_name).first()
+                new_server = BotServer(discord_id=server.discord_id, discord_name=server.discord_name, discord_icon=server.discord_icon, session_id=server.session_id, session_user_id=server.session_user_id, session_username=server.session_username)
+                db.session.add(new_server)
+                db.session.commit()
+                response = make_response(new_server.to_dict(), 201) 
+                return response  
+            except Exception as e:
+                # Handle any database-related errors here
+                db.session.rollback()
+                return {'message': str(e)}, 422                     
+api.add_resource(BotCheck, '/botcheck')
 # class BotCheck(Resource):
+# todo discord method
 #     def post(self):
 #         data = request.get_json()
 #         guild_id = data.get('guild_id')
@@ -80,6 +228,16 @@ api.add_resource(DiscordUser, '/userauth')
 #         response = requests.get(url, headers=headers)
 #         return response
 # api.add_resource(BotCheck, '/fetch-bot')
+
+class ResetDatabaseResource(Resource):
+    def post(self):
+        try:
+            db.drop_all()
+            db.create_all()
+            return {'message': 'Database reset successfully'}, 200
+        except Exception as e:
+            return {'error': str(e)}, 500
+api.add_resource(ResetDatabaseResource, '/reset-database')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

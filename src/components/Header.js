@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 
 const Header = () => {
-  const { token, logout, userData, guilds} = useContext(AuthContext);
+  const { token, logout, userData, guilds, sessionData} = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -18,8 +18,34 @@ const Header = () => {
   };
 
   function boop() {
-    console.log({ userData, guilds });
+    console.log({ userData, guilds, sessionData });
   }
+
+  const reset = async () => {
+    try {
+        const response = await fetch('/reset-database', {
+            method: 'POST',
+        });
+
+        const data = await response.json();
+        alert(data.message); // Show a message to the user
+    } catch (error) {
+        console.error('Error resetting database:', error);
+    }
+  };
+
+  const getSession = async () => {
+    try {
+        const response = await fetch('/getsession', {
+            method: 'GET',
+        });
+
+        const data = await response.json();
+        alert(data); // Show a message to the user
+    } catch (error) {
+        console.error('Error resetting database:', error);
+    }
+  };
 
   return (
     <div>
@@ -33,6 +59,8 @@ const Header = () => {
         <button onClick={handleLogin}>Login</button>
       )}
       <button onClick={boop}>boop</button>
+      <button onClick={reset}>Reset</button>
+      <button onClick={getSession}>Session</button>
     </div>
   );
 };

@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
+from flask_session import Session
 
 # Create the Flask app
 app = Flask(__name__)
@@ -21,7 +22,7 @@ metadata = MetaData(naming_convention={
 })
 
 # Create the SQLAlchemy database object
-db = SQLAlchemy(app, metadata=metadata)
+db = SQLAlchemy(metadata=metadata)
 
 # Create the Migrate object
 migrate = Migrate(app, db)
@@ -31,3 +32,9 @@ api = Api(app)
 
 # Enable CORS
 CORS(app)
+
+#session
+app.config['SESSION_TYPE'] = 'filesystem'
+# app.config['SESSION_PERMANENT'] = True
+Session(app)
+db.init_app(app)

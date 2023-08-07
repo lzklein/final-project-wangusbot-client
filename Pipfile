@@ -6,6 +6,7 @@ name = "pip_conf_index_:env:"
 [packages]
 python-dotenv = {version = "*", index = "pip_conf_index_:env:"}
 requests = "*"
+bcrypt = "*"
 
 [dev-packages]
 
