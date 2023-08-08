@@ -22,16 +22,20 @@ const Loading = () => {
                 console.log('checkpoint 3!')
                 const userData = await getUserData(authData.access_token);
                 setUserData(userData);
+                localStorage.setItem('userData', JSON.stringify(userData));
+
 
                 console.log('checkpoint 4!')
                 const guildData = await getGuilds(authData.access_token);
                 if (!guildData.retry_after) {
                     setGuilds(guildData);
+                    localStorage.setItem('guildData', JSON.stringify(guildData));
 
                     console.log('checkpoint 5!')
                     const newSessionData = await registerUser(authData, userData);
                     if (!newSessionData.message){
                         setSessionData(newSessionData);
+                        localStorage.setItem('sessionData', JSON.stringify(newSessionData))
                     }
                     console.log(newSessionData);
     
@@ -83,7 +87,7 @@ const Loading = () => {
             throw new Error('Failed to fetch user data');
         }
     
-        const userData = await response.json(); // Extract JSON data from the response
+        const userData = await response.json();
         return userData;
     };
     
@@ -120,7 +124,7 @@ const Loading = () => {
         });
     
         const responseData = await response.json();
-    
+
         if (response.ok) {
             return responseData;
         } else {

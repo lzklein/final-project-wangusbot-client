@@ -86,9 +86,9 @@ html {
   padding: 0;
   overflow: hidden;
   background-color: #333;
-  display: flex; /* Use flex display for vertical centering */
-  align-items: center; /* Vertically center the content */
-  height: 60px; /* Adjust this value to match the desired height */
+  display: flex; 
+  align-items: center;
+  height: 60px; 
 }
 
 .navitem {
@@ -97,16 +97,16 @@ html {
   text-align: center;
   min-height: 41px;
   /* flex-shrink: 0; */
-  position: relative; /* Add this for positioning the pseudo-element */
+  position: relative;
 }
 
 .navitem::before {
   content: "";
   position: absolute;
-  top: -10px; /* Adjusted to cover the top margin */
+  top: -10px;
   left: 0;
   width: 100%;
-  height: calc(100% + 20px); /* Adjusted to cover the top and bottom margins */
+  height: calc(100% + 20px); 
   background-color: #111;
   z-index: -1;
   opacity: 0;
@@ -114,10 +114,10 @@ html {
 }
 
 .navitem:hover::before {
-  opacity: 1; /* Increase opacity on hover */
+  opacity: 1; 
 }
 :root {
-  --sitelogo-margin-right: 30%; /* Default margin-right value */
+  --sitelogo-margin-right: 30%; 
 }
 
 .sitelogo {
@@ -144,7 +144,6 @@ li a {
   text-decoration: none;
 }
 
-/* Change the link color to #111 (black) on hover */
 li a:hover {
   background-color: #111;
   /* height: 41px; */
@@ -186,7 +185,17 @@ li a:hover {
 }
 
 .column-heading {
-  margin: 10px 0; /* Add top and bottom margin to headings */
+  margin: 10px 0; 
   font-weight: bold;
   list-style: none;
+}
+
+.server-commands {
+  margin: 20px;
+  padding: 15px;
+  background-color: rgb(169, 187, 206);
+  padding-bottom: 35px;
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;  margin-top: 10px;
+  border-radius: 1px;
+  user-select: none;
 }

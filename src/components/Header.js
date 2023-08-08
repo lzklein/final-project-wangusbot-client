@@ -17,6 +17,51 @@ const Header = () => {
     navigate('/');
   };
 
+  const allCommands = [
+    {
+      name: 'ping',
+      description: 'Pong!'
+    },
+    {
+      name:'server',
+      description: 'View server details'
+    },
+    {
+      name: 'reactionrole',
+      description: 'Set server roles with message reactions'
+    }
+  ]
+
+  function postAllCommands() {
+    const fetchPromises = allCommands.map(command => {
+      return fetch('/commandpost', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: command.name,
+          description: command.description
+        })
+      });
+    });
+  
+    Promise.all(fetchPromises)
+      .then(responses => {
+        const allResponsesSuccessful = responses.every(response => response.ok);
+        if (allResponsesSuccessful) {
+          alert('Commands posted successfully');
+        } else {
+          alert('Error posting commands');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while posting commands');
+      });
+  }
+  
+
   function boop() {
     console.log({ userData, guilds, sessionData });
   }
@@ -28,7 +73,7 @@ const Header = () => {
         });
 
         const data = await response.json();
-        alert(data.message); // Show a message to the user
+        alert(data.message); 
     } catch (error) {
         console.error('Error resetting database:', error);
     }
@@ -41,16 +86,17 @@ const Header = () => {
         });
 
         const data = await response.json();
-        alert(data); // Show a message to the user
+        console.log(data); 
     } catch (error) {
-        console.error('Error resetting database:', error);
+        console.error('Error getting session:', error);
     }
   };
 
   return (
     <div>
       <Navbar user={userData} login={handleLogin} logout={logout}/>
-      {userData ? (
+
+      {/* {userData ? (
         <div>
           <p>welcome, {userData.username}</p>
           <button onClick={handleLogout}>Logout</button>
@@ -58,9 +104,11 @@ const Header = () => {
       ) : (
         <button onClick={handleLogin}>Login</button>
       )}
+      <p>debug menu</p>
       <button onClick={boop}>boop</button>
       <button onClick={reset}>Reset</button>
       <button onClick={getSession}>Session</button>
+      <button onClick={postAllCommands}>Post Commands</button> */}
     </div>
   );
 };

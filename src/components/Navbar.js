@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import loginIcon from '../assets/login3.png'
 import cow from '../assets/cow.png'
-import logoutIcon from "../assets/logout4.png"
+import logoutIcon from "../assets/logout5.png"
 
 const Navbar = ({user, login, logout}) => {
   const navigate = useNavigate()

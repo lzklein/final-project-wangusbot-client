@@ -9,6 +9,10 @@ requests = "*"
 bcrypt = "*"
 flask = {version = "*", index = "pip_conf_index_:env:"}
 sqlalchemy = {version = "*", index = "pip_conf_index_:env:"}
+flask-restful = {version = "*", index = "pip_conf_index_:env:"}
+flask-cors = {version = "*", index = "pip_conf_index_:env:"}
+flask-session = {version = "*", index = "pip_conf_index_:env:"}
+flask-sqlalchemy = {version = "*", index = "pip_conf_index_:env:"}
 
 [dev-packages]
 

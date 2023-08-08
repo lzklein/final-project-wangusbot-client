@@ -8,6 +8,9 @@ const ServerRedirect = () => {
         console.log(redirect)
         fetch('/botcheck', {
           method: 'POST',
+          headers: {
+            'Content-Type':'application/json'
+          },
           body: JSON.stringify({
               server_name: redirect
           })

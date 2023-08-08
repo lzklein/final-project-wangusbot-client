@@ -20,23 +20,36 @@ function App() {
 
   useEffect(() => {
     // Fetch the user's session data from the server
-    fetch("http://127.0.0.1:5555/checksession")
-        .then((response) => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Session check failed');
-            }
-        })
-        .then((user) => {
-            setUserData(user);
-            // Fetch additional user data, like guilds, if needed
-            // For example:
-            // fetchUserGuilds(user.id);
-        })
-        .catch((error) => {
-            console.error('Error checking session:', error);
-        });
+    // !localStorage method
+    const userDataJSON = localStorage.getItem('userData');
+    const user = JSON.parse(userDataJSON);
+    const guildDataJSON = localStorage.getItem('guildData');
+    const guildData = JSON.parse(guildDataJSON);
+    const sessionDataJSON = localStorage.getItem('sessionData');
+    const session = JSON.parse(sessionDataJSON);
+    if (user) {
+      setUserData(user)
+      setGuilds(guildData)
+      setSessionData(session)
+    }
+    // ! flask session method session needs fixing
+    // fetch("/checksession")
+    //     .then((response) => {
+    //         if (response.ok) {
+    //             return response.json();
+    //         } else {
+    //             throw new Error('Session check failed');
+    //         }
+    //     })
+    //     .then((user) => {
+    //         setUserData(user);
+    //         // Fetch additional user data, like guilds, if needed
+    //         // For example:
+    //         // fetchUserGuilds(user.id);
+    //     })
+    //     .catch((error) => {
+    //         console.error('Error checking session:', error);
+    //     });
 }, []);
 
   // const login = (user) => {
@@ -74,25 +87,32 @@ function App() {
   // }
 
   const logout = () => {
-    setUserData(null);
-    setSessionData(null)
-    setGuilds(null);
-    setToken(null);
-    fetch('http://127.0.0.1:5555/logout', {
+    // setUserData(null);
+    // setSessionData(null)
+    // setGuilds(null);
+    // setToken(null);
+    // !localStorage
+    localStorage.removeItem('userData');
+    localStorage.removeItem('guildData');
+    localStorage.removeItem('sessionData');
+    // !flask-session
+    fetch(`http://127.0.0.1:5555/logout/${userData.id}`, {
         method: 'DELETE'
     })
     .then((response) => {
         if (response.status === 204) {
             // Logout was successful
+            setUserData(null);
+            setSessionData(null)
+            setGuilds(null);
+            setToken(null);
             window.location.href = '/'; // Redirect to the desired URL after logout
         } else {
-            // Handle logout failure or errors here
             console.error('Logout failed:', response);
         }
     })
     .catch((error) => {
         console.error('Error logging out:', error);
-        // Handle any errors here, if needed
     });
 };
 
