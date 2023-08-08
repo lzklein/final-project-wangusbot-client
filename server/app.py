@@ -203,9 +203,9 @@ class BotCheck(Resource):
         else:
             try:
                 server = SessionServer.query.filter(SessionServer.discord_name == server_name).first()
-                server_dict = SessionServer.query.filter(SessionServer.discord_name == server_name).first().to_dict()
+                # server_dict = SessionServer.query.filter(SessionServer.discord_name == server_name).first().to_dict()
                 print("In trying to get SessionServer")
-                print(server_dict)
+                # print(server.to_dict())
                 new_server = BotServer(discord_id=server.discord_id, discord_name=server.discord_name, discord_icon=server.discord_icon)
                 print("checking new server in BotServer")
                 print(new_server.to_dict())

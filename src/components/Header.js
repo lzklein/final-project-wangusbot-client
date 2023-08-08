@@ -95,8 +95,8 @@ const Header = () => {
   return (
     <div>
       <Navbar user={userData} login={handleLogin} logout={logout}/>
-
-      {/* {userData ? (
+{/* 
+      {userData ? (
         <div>
           <p>welcome, {userData.username}</p>
           <button onClick={handleLogout}>Logout</button>

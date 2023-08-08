@@ -45,9 +45,9 @@ class SessionServer(db.Model, SerializerMixin):
             'discord_name': self.discord_name,
             'discord_id': self.discord_id,
             'discord_icon': self.discord_icon,
-            'session_id': self.session_id,
+            # 'session_id': self.session_id,
             'session_user_id': self.session_user_id,
-            'session_username': self.session_username,
+            # 'session_username': self.session_username,
         }
 
 class BotServer(db.Model, SerializerMixin):
