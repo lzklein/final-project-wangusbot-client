@@ -257,7 +257,8 @@ class CommandPost(Resource):
             data = request.get_json()
             command_name = data.get('name')
             command_description = data.get('description')
-            new_bot_command = BotCommand(name=command_name, description=command_description)
+            command_type = data.get('command_type')
+            new_bot_command = BotCommand(name=command_name, description=command_description, command_type=command_type)
             db.session.add(new_bot_command)
             db.session.commit()
 
@@ -301,7 +302,8 @@ class AddServerCommand(Resource):
             command_description = data.get('description')
             discord_name = data.get('discord_name')
             discord_id = data.get('discord_id')
-            new_server_command = ServerCommand(command_id=command_id ,command_name=command_name, command_description=command_description, discord_name=discord_name, discord_id=discord_id)
+            command_type = data.get('command_type')
+            new_server_command = ServerCommand(command_id=command_id ,command_name=command_name, command_description=command_description, command_type=command_type, discord_name=discord_name, discord_id=discord_id)
             db.session.add(new_server_command)
             db.session.commit()
             return {'message': 'Command posted successfully'}, 201

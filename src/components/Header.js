@@ -20,15 +20,18 @@ const Header = () => {
   const allCommands = [
     {
       name: 'ping',
-      description: 'Pong!'
+      description: 'Pong!',
+      type: "slash"
     },
     {
       name:'server',
-      description: 'View server details'
+      description: 'View server details',
+      type: "slash"
     },
     {
       name: 'reactionrole',
-      description: 'Set server roles with message reactions'
+      description: 'Set server roles with message reactions',
+      type: "mod"
     }
   ]
 
@@ -41,7 +44,8 @@ const Header = () => {
         },
         body: JSON.stringify({
           name: command.name,
-          description: command.description
+          description: command.description,
+          command_type: command.type
         })
       });
     });
@@ -95,8 +99,8 @@ const Header = () => {
   return (
     <div>
       <Navbar user={userData} login={handleLogin} logout={logout}/>
-{/* 
-      {userData ? (
+
+      {/* {userData ? (
         <div>
           <p>welcome, {userData.username}</p>
           <button onClick={handleLogout}>Logout</button>

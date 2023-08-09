@@ -72,6 +72,7 @@ class ServerCommand(db.Model, SerializerMixin):
     command_id = db.Column(db.Integer, db.ForeignKey('botcommands.id'))
     command_name = db.Column(db.String, db.ForeignKey('botcommands.name'))
     command_description = db.Column(db.String, db.ForeignKey('botcommands.description'))
+    command_type = db.Column(db.String, db.ForeignKey('botcommands.command_type'))
     # server_id = db.Column(db.Integer, db.ForeignKey('botservers.id'))
     discord_name = db.Column(db.String, db.ForeignKey('botservers.discord_name'))
     discord_id = db.Column(db.String, db.ForeignKey('botservers.discord_id'))
@@ -86,6 +87,7 @@ class ServerCommand(db.Model, SerializerMixin):
             'command_description' : self.command_description,
             'discord_name': self.discord_name,
             'discord_id': self.discord_id,
+            'command_type':self.command_type
         }
 
 
@@ -94,10 +96,12 @@ class BotCommand(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     description = db.Column(db.String)
+    command_type = db.Column(db.String)
 
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
             'description': self.description,
+            'command_type':self.command_type
         }

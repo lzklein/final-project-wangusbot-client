@@ -9,6 +9,7 @@ import Server from "./Server";
 import BotStatus from "./BotStatus";
 import Loading from "./Loading";
 import ServerRedirect from "./ServerRedirect"
+import ReactionRoles from "./ReactionRole"
 
 export const AuthContext = createContext();
 
@@ -124,6 +125,7 @@ function App() {
         <Routes>
           <Route path="/commands" element={<CommandList />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/server/:serverName/reactionrole" element={<ReactionRoles />}/>
           <Route path="/server/:serverName" element={<Server />} />
           <Route path="/status" element={<BotStatus />} />
           <Route path="/loading" element={<Loading />}/>

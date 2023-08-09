@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   background-color: lightslategray;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 .App-logo {
@@ -65,6 +66,16 @@ html {
   padding: 10px;
   width: 100%;
   }
+
+  .rr-message {
+    width: 500px;
+    min-width: 200px;
+    height: 120px;
+    font-size: 18px;
+  }
+  
+
+
 .card {
   background-color: rgb(169, 187, 206);
   padding-bottom: 10px;
@@ -80,15 +91,63 @@ html {
   box-shadow: rgba(255, 255, 255, 0.324) 0px 50px 100px -20px, rgba(255, 255, 255, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;  margin-left: 20px;
 }
 
+.checkbox-button {
+  margin-top:15px;
+  align-items: center;
+  appearance: none;
+  background-color: #FCFCFD;
+  border-radius: 4px;
+  border-width: 0;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #36395A;
+  cursor: pointer;
+  display: inline-flex;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 36px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 8px;
+  padding-right: 8px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow .15s,transform .15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow,transform;
+  font-size: 12px;
+}
+
+.checkbox-button:focus {
+  box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+}
+
+.checkbox-button:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.checkbox-button:active {
+  box-shadow: #D6D6E7 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
 .nav-list {
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #333;
+  background-color: #1a1e21;
   display: flex; 
   align-items: center;
   height: 60px; 
+  box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+  margin-bottom:50px;
 }
 
 .navitem {
@@ -107,7 +166,7 @@ html {
   left: 0;
   width: 100%;
   height: calc(100% + 20px); 
-  background-color: #111;
+  background-color: #000000;
   z-index: -1;
   opacity: 0;
   transition: opacity 0.3s;
@@ -188,6 +247,7 @@ li a:hover {
   margin: 10px 0; 
   font-weight: bold;
   list-style: none;
+  text-align: center;
 }
 
 .server-commands {
